@@ -72,7 +72,7 @@ Instructions:
             var sequence = Promise.resolve();
         
             response.results.forEach(function(url){
-                sequence = sequence.then(function(){  //extending sequence by two thens for each element of an array
+                sequence.then(function(){  // data are downloaded in parallel, no guarantee about the order
                     return getJSON(url);
                 }).then(function(response){
                     createPlanetThumb(response);
