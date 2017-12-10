@@ -68,14 +68,13 @@ Instructions:
     getJSON('../data/earth-like-results.json').then(function(response){
             console.log(response);
             addSearchHeader(response.query);
-        
-            response.results.map(function(url){
-                    getJSON(url).then(function(response){//parallel
-                    createPlanetThumb(response);
+            return Promise.all(response.results.map(getJSON));  //list of promises for every planet-  they wait until they are all done (parallel) and  will be treated in a given order!!
+              }).then(function(arrayOfData){
+                   arrayOfData.forEach(function(data){
+                       createPlanetThumb(data);
                 });
-              });
-            });
-        }).catch(function(){
-            throw Error("error");
+        }).catch(function(error){
+            console.log(error);
         });
+      });
 })(document);
