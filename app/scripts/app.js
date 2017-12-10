@@ -35,6 +35,9 @@ Instructions:
 
     Your code goes here!
      */
+      return fetch(url, {  //fetch has promise BUILD IN, you do not need to write a new promise!
+          method: 'GET'  //optional
+      });
   }
 
   /**
@@ -48,6 +51,11 @@ Instructions:
 
     Your code goes here!
      */
+      return get(url).then(function(response){
+          return response.json();  //specific to fetch API, same as JSON.parse();
+      });
+      
+      
   }
 
   window.addEventListener('WebComponentsReady', function() {
@@ -58,6 +66,14 @@ Instructions:
 
     Your code goes here too!
      */
-    // getJSON('../data/earth-like-results.json')
+    getJSON('../data/earth-like-results.json')
+        .then(function(response){
+            addSearchHeader(response.query);
+            console.log(response);
+    })
+        .catch(function(error){
+            addSearchHeader("empty");
+            console.log(error);
+    })
   });
 })(document);
