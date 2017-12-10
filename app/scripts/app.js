@@ -66,15 +66,20 @@ Instructions:
     Your code goes here!
      */
     getJSON('../data/earth-like-results.json').then(function(response){
+            console.log(response);
             addSearchHeader(response.query);
-            return getJSON(response.results[0]);
+            
+            var sequence = Promise.resolve();
+        
+            response.results.forEach(function(url){
+                sequence = sequence.then(function(){  //extending sequence by two thens for each element of an array
+                    return getJSON(url);
+                }).then(function(response){
+                    createPlanetThumb(response);
+                });
+            })
         }).catch(function(){
             throw Error("error");
-        }).then(function(response){
-            createPlanetThumb(response);
-      }).catch(function(error){
-            addSearchHeader("unknown");
-            console.log(error);
-      })
+        }) ;
   });
 })(document);
